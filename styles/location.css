@@ -1,0 +1,18 @@
+.location__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.location__city-name {
+    font-weight: 400;
+    font-size: 50px;
+    margin-bottom: 9px;
+    color: black;
+}
+
+.location__city-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
