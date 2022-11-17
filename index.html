@@ -9,44 +9,46 @@
     <title>Погода</title>
 </head>
 <body>
-    <section>
-        <div class="container location__container">
-            <div class="location__city" id="location__city">
-                <h1 class="location__city-name" id="city-name">Екатеринбург</h1>
-                <div class="location__city-inner">
-                    <button onclick="openForm()" class="location__city-change btn-reset" id="city__change-btn" >Сменить город</button>
-                    <button class="location__city__location btn-reset">Мое местоположение</button>
+    <div class="weather">
+        <section>
+            <div class="container location__container">
+                <div class="location__city" id="location__city">
+                    <h1 class="location__city-name" id="city-name">Екатеринбург</h1>
+                    <div class="location__city-inner">
+                        <button onclick="openForm()" class="location__city-change btn-reset" id="city__change-btn" >Сменить город</button>
+                        <button class="location__city__location btn-reset">Мое местоположение</button>
+                    </div>
+                </div>
+                <div class="units">
+                    <button class="units__c btn-reset unit-current" id="units__c">C</button>
+                    <button class="units__f btn-reset" id="units__f">F</button>
                 </div>
             </div>
-            <div class="units">
-                <button class="units__c btn-reset unit-current">C</button>
-                <button class="units__f btn-reset">F</button>
+        </section>
+        <section class="form">
+            <div class="container form-popup" id="myForm">
+                <h1 class="heading">Simple Weather App</h1>
+                <form id="location" action="/apply/" method="POST">
+                    <label>
+                        Широта:
+                        <input type="number" lang="en" name="latitude" id="latitude" placeholder="60.612499" required autofocus>
+                    </label>
+                    <label>
+                        Longitude:
+                        <input type="number" lang="en" name="longitude" id="longitude" placeholder="56.857498" required>
+                    </label>
+                    <button class="submit" type="submit">Отправить</button>
+                    <div id="loader" class="hidden">Отправляем...</div>
+                    <span class="msg"></span>
+                </form>
             </div>
-        </div>
-    </section>
-    <section class="form">
-        <div class="container form-popup" id="myForm">
-            <h1 class="heading">Simple Weather App</h1>
-            <form id="location" action="/apply/" method="POST">
-                <label>
-                    Широта:
-                    <input type="number" lang="en" name="latitude" id="latitude" placeholder="60.612499" required autofocus>
-                </label>
-                <label>
-                    Longitude:
-                    <input type="number" lang="en" name="longitude" id="longitude" placeholder="56.857498" required>
-                </label>
-                <button class="submit" type="submit">Отправить</button>
-                <div id="loader" class="hidden">Отправляем...</div>
-                <span class="msg"></span>
-            </form>
-        </div>
-    </section>
-    <section class="weather">
-        <div class="container weather__container" id="weather__container">
+        </section>
+        <section class="weather">
+            <div class="container weather__container" id="weather__container">
 
-        </div>
-    </section>
+            </div>
+        </section>
+    </div>
     <script src="js/weather.js"></script>
 </body>
 </html>

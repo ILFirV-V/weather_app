@@ -4,6 +4,10 @@ const weatherContainer = document.getElementById("weather__container")
 const applicantForm = document.getElementById('location');
 const myForm = document.getElementById("myForm")
 const cityName = document.getElementById("city-name")
+
+const unitsC = document.getElementById("units__c")
+const unitsF = document.getElementById("units__f")
+
 applicantForm.addEventListener('submit', handleFormSubmit);
 
 // const cityContainer = document.getElementById("location__city")
@@ -54,12 +58,27 @@ function render(response) {
   myForm.style.display = "none";
   cityName.textContent = response.name;
   weatherContainer.innerHTML = markUpWeatherContainer(response);
+  renderDayOrNight(response)
 }
 
 //показать загрузку во время отправки данных
 function toggleLoader() {
   const loader = document.getElementById('loader')
   loader.classList.toggle('hidden')
+}
+
+function renderDayOrNight(data) {
+  let attrName = isDay(data) ? 'day':'night';
+  console.log(isDay)
+  transition();
+  document.documentElement.setAttribute('data-theme', attrName);
+}
+
+function transition() {
+  document.documentElement.classList.add('transition');
+  setTimeout(function() {
+    document.documentElement.classList.remove('transition');
+  }, 4000)
 }
 
 //Получить время дня
@@ -125,35 +144,42 @@ const directionOfWind = (degree) => {
 //
 
 
-//обработка системы счисления температуры
-// unitsC.addEventListener('click', () => {
-//   if(unitsC.classList.contains('unit-current')) {
-//     return;
-//   }
-//
-//   unitsC.classList.add('unit-current');
-//   unitsF.classList.remove('unit-current');
-//   document.querySelector('.weather__units').textContent = 'o';
-//
-//   const temperature = document.querySelector('.weather__temperature');
-//   const convertedTemp = fToC(+temperature.textContent);
-//   temperature.textContent = Math.round(convertedTemp);
-// });
-//
-// unitsF.addEventListener('click', () => {
-//   if(unitsF.classList.contains('unit-current')) {
-//     return;
-//   }
-//
-//   unitsF.classList.add('unit-current');
-//   unitsC.classList.remove('unit-current');
-//   document.querySelector('.weather__units').textContent = 'f';
-//
-//   const temperature = document.querySelector('.weather__temperature');
-//   const convertedTemp = cToF(+temperature.textContent);
-//   temperature.textContent = Math.round(convertedTemp);
-// });
+// обработка системы счисления температуры
+unitsC.addEventListener('click', () => {
+  if(unitsC.classList.contains('unit-current')) {
+    return;
+  }
 
+  unitsC.classList.add('unit-current');
+  unitsF.classList.remove('unit-current');
+  document.querySelector('.weather__units').textContent = 'o';
+
+  const temperature = document.querySelector('.weather__temperature');
+  const convertedTemp = fToC(+temperature.textContent);
+  temperature.textContent = Math.round(convertedTemp);
+});
+
+unitsF.addEventListener('click', () => {
+  if(unitsF.classList.contains('unit-current')) {
+    return;
+  }
+
+  unitsF.classList.add('unit-current');
+  unitsC.classList.remove('unit-current');
+  document.querySelector('.weather__units').textContent = 'f';
+
+  const temperature = document.querySelector('.weather__temperature');
+  const convertedTemp = cToF(+temperature.textContent);
+  temperature.textContent = Math.round(convertedTemp);
+});
+
+const cToF = (celsius) => {
+  return celsius * 9 / 5 + 32;
+}
+
+const fToC = (fahrenheit) => {
+  return (fahrenheit - 32) * 5 / 9;
+}
 
 
 // const form = document.getElementById('form');
