@@ -1,0 +1,33 @@
+.weather-info__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    border-radius: 10px;
+    border: 2px solid #000;
+    margin: 0;
+    padding: 20px;
+}
+
+.weather-info__item {
+    padding: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 22px;
+    color: white;
+}
+
+.weather__inner {
+    position: relative;
+    padding: 100px 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 125px;
+}
+
+.weather__icon {
+    width: 150px;
+    height: 150px;
+}

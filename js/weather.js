@@ -1,34 +1,30 @@
-const msg = document.querySelector(".top-banner .msg");
+const msg = document.querySelector(".msg");
 const weatherContainer = document.getElementById("weather__container")
-
-const applicantForm = document.getElementById('location');
-const myForm = document.getElementById("myForm")
-const cityName = document.getElementById("city-name")
-
-const unitsC = document.getElementById("units__c")
-const unitsF = document.getElementById("units__f")
-
+const applicantForm = document.getElementById('form__box');
+const weatherForm = document.getElementById("form")
+const cityName = document.querySelector("h1")
+const unitsC = document.getElementById("units-c")
+const unitsF = document.getElementById("units-f")
 applicantForm.addEventListener('submit', handleFormSubmit);
 
-// const cityContainer = document.getElementById("location__city")
-// const cityChange = document.getElementById("city__change-btn")
-// cityChange.addEventListener('click', () => {
-//   cityContainer.innerHTML = ' ';
-//   // searchBlock.append(searchInput, searchBtn, errorBlock);
-//   cityContainer.innerHTML = markUpHeaderContainer();
-// });
+document.addEventListener('mousedown', function(e){
+  if(e.target.closest('.form') === null){
+    weatherForm.style.display = 'none';
+  }
+});
 
 function openForm() {
-  myForm.style.display = "block";
+  weatherForm.style.display = "flex";
 }
 
 const fetchData = async (dataForm) => {
   try {
     const result = await
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${dataForm.get("latitude")}&lon=${dataForm.get("longitude")}&appid=2931438045cd03cbd77760fecb7fd68b&lang=ru`);
+    console.log(result)
     return await result.json();
   } catch (error) {
-    msg.textContent = "error";
+    msg.textContent = "error"
     console.error(error)
   }
 }
@@ -40,32 +36,26 @@ function serializeForm(formNode) {
 async function handleFormSubmit(event) {
   event.preventDefault();
   const dataForm = serializeForm(event.target);
-  toggleLoader()
-
   const response = await fetchData(dataForm);
   if (!response) {
     return null;
   }
-
-  toggleLoader()
-
   console.log(response)
   render(response)
-
 }
 
 function render(response) {
-  myForm.style.display = "none";
+  weatherForm.style.display = "none";
   cityName.textContent = response.name;
   weatherContainer.innerHTML = markUpWeatherContainer(response);
   renderDayOrNight(response)
 }
 
 //показать загрузку во время отправки данных
-function toggleLoader() {
-  const loader = document.getElementById('loader')
-  loader.classList.toggle('hidden')
-}
+// function toggleLoader() {
+//   const loader = document.getElementById('loader')
+//   loader.classList.toggle('hidden')
+// }
 
 function renderDayOrNight(data) {
   let attrName = isDay(data) ? 'day':'night';
@@ -91,14 +81,13 @@ function isDay(data) {
 
 const markUpWeatherContainer = (dataWeather) => {
   return `<div class="weather__inner">
-            <h2 class="weather__temperature">${Math.floor(dataWeather.main.temp - 273)}</h2>
+            <h2 class="weather__temperature"><span id="temperature">${Math.floor(dataWeather.main.temp - 273)}</span>&deg</h2>
             <img class="weather__icon" src="https://openweathermap.org/img/w/${dataWeather.weather[0].icon}.png" alt="погода в картинке">
-            <span class="weather__units">o</span>
           </div>
           <ul class="weather-info__list">
             <li class="weather-info__item">
                 <span>Ветер</span>
-                <p>${dataWeather.wind.speed + "м/с" + "," + directionOfWind(dataWeather.wind.deg)}</p>
+                <p>${dataWeather.wind.speed + "м/с" + ", " + directionOfWind(dataWeather.wind.deg)}</p>
             </li>
             <li class="weather-info__item">
                 <span>Давление</span>
@@ -126,6 +115,38 @@ const directionOfWind = (degree) => {
   if (degree>22.5) { return 'северо-восточный' }
 }
 
+// обработка системы счисления температуры
+unitsC.addEventListener('click', () => {
+  if(unitsC.classList.contains('unit-current')) {
+    return;
+  }
+  unitsC.classList.add('unit-current');
+  unitsF.classList.remove('unit-current');
+  const temperature = document.getElementById("temperature");
+  const convertedTemp = fToC(+temperature.textContent);
+  temperature.textContent = Math.round(convertedTemp);
+});
+
+unitsF.addEventListener('click', () => {
+  if(unitsF.classList.contains('unit-current')) {
+    return;
+  }
+  unitsF.classList.add('unit-current');
+  unitsC.classList.remove('unit-current');
+  const temperature = document.getElementById("temperature");
+  const convertedTemp = cToF(+temperature.textContent);
+  temperature.textContent = Math.round(convertedTemp);
+});
+
+const cToF = (celsius) => {
+  return celsius * 9 / 5 + 32;
+}
+
+const fToC = (fahrenheit) => {
+  return (fahrenheit - 32) * 5 / 9;
+}
+
+
 // const markUpHeaderContainer = () => {
 //   return `<form id="location" action="/apply/" method="POST">
 //                 <label>
@@ -143,44 +164,20 @@ const directionOfWind = (degree) => {
 // }
 //
 
+// const cityContainer = document.getElementById("location__city")
+// const cityChange = document.getElementById("city__change-btn")
+// cityChange.addEventListener('click', () => {
+//   cityContainer.innerHTML = ' ';
+//   // searchBlock.append(searchInput, searchBtn, errorBlock);
+//   cityContainer.innerHTML = markUpHeaderContainer();
+// });
 
-// обработка системы счисления температуры
-unitsC.addEventListener('click', () => {
-  if(unitsC.classList.contains('unit-current')) {
-    return;
-  }
-
-  unitsC.classList.add('unit-current');
-  unitsF.classList.remove('unit-current');
-  document.querySelector('.weather__units').textContent = 'o';
-
-  const temperature = document.querySelector('.weather__temperature');
-  const convertedTemp = fToC(+temperature.textContent);
-  temperature.textContent = Math.round(convertedTemp);
-});
-
-unitsF.addEventListener('click', () => {
-  if(unitsF.classList.contains('unit-current')) {
-    return;
-  }
-
-  unitsF.classList.add('unit-current');
-  unitsC.classList.remove('unit-current');
-  document.querySelector('.weather__units').textContent = 'f';
-
-  const temperature = document.querySelector('.weather__temperature');
-  const convertedTemp = cToF(+temperature.textContent);
-  temperature.textContent = Math.round(convertedTemp);
-});
-
-const cToF = (celsius) => {
-  return celsius * 9 / 5 + 32;
-}
-
-const fToC = (fahrenheit) => {
-  return (fahrenheit - 32) * 5 / 9;
-}
-
+// document.addEventListener('keydown', function(e) {
+//   if( e.key === "27" ){ // код клавиши Escape, но можно использовать e.key
+//     myForm.style.display = 'none';
+//   }
+// });
+//
 
 // const form = document.getElementById('form');
 // form.addEventListener('submit', getFormValue);

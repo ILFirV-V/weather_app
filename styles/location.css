@@ -5,14 +5,17 @@
 }
 
 .location__city-name {
-    font-weight: 400;
-    font-size: 50px;
-    margin-bottom: 9px;
-    color: black;
+    font-size: 4em;
+    color: #ffffff;
+    border-left: 5px solid dodgerblue;
+    padding: 10px;
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .location__city-inner {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 20px;
 }

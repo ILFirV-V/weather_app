@@ -6,6 +6,7 @@
     border: none;
     opacity: 0.6;
     background-color: transparent;
+    color: white;
 }
 
 .units {
@@ -13,9 +14,10 @@
 }
 
 .units__c, .units__f {
-    padding: 3px 14px;
-    border: 1px solid black;
-    border-radius: 8px;
+    color: white;
+    padding: 6px 28px;
+    border: 2px solid white;
+    border-radius: 16px;
 }
 
 .unit-current {
