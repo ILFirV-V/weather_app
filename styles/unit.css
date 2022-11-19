@@ -10,7 +10,7 @@
 }
 
 .units {
-    display: flex;
+    display: none;
 }
 
 .units__c, .units__f {

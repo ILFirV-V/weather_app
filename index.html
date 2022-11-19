@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="styles/style.css" />
     <title>Погода</title>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш API-ключ&lang=ru_RU" type="text/javascript"></script>
 </head>
 <body>
     <section class="container">
@@ -14,8 +15,9 @@
             <div>
                 <h1 class="location__city-name">Установите город</h1>
                 <div class="location__city-inner">
-                    <button onclick="openForm()" class="btn-reset">Сменить город</button>
-                    <button class="btn-reset">Мое местоположение</button>
+                    <button onclick="openForm()" class="btn-reset" id="openForm">Сменить город</button>
+                    <button class="btn-reset" id="location__my">Мое местоположение</button>
+                    <span id="status"></span>
                 </div>
             </div>
             <div class="units">
@@ -29,41 +31,32 @@
             <form class="form__box" id="form__box">
                 <div class="form__input">
                     <label>
-                        <input type="text" name="latitude" required="required" autofocus>
+                        <input type="text" name="latitude" required="required">
+                        <span class="form__text">Широта</span>
                     </label>
-                    <span>Широта</span>
                 </div>
                 <div class="form__input">
                     <label>
                         <input type="text" name="longitude" required="required">
+                        <span class="form__text">Долгота</span>
                     </label>
-                    <span>Долгота</span>
+
                 </div>
                 <button class="form__button" type="submit">Отправить</button>
                 <span class="msg"></span>
             </form>
         </div>
-
-<!--            <div class="container form-popup" id="myForm">-->
-<!--                <form class="location__form" id="location" action="/apply/" method="POST">-->
-<!--                    <label class="form__input-box">-->
-<!--                        <span class="form__text">Широта:</span>-->
-<!--                        <input class="form__input" lang="en" name="latitude" id="latitude" placeholder="60.612499" required autofocus>-->
-<!--                    </label>-->
-<!--                    <label class="form__input-box">-->
-<!--                        <span class="form__text">Долгота:</span>-->
-<!--                        <input class="form__input" lang="en" name="longitude" id="longitude" placeholder="56.857498" required>-->
-<!--                    </label>-->
-<!--                    <button class="submit" type="submit">Отправить</button>-->
-<!--                    <div id="loader" class="hidden">Отправляем...</div>-->
-<!--                    <span class="msg"></span>-->
-<!--                </form>-->
-<!--            </div>-->
     </section>
     <section class="container">
         <div class="weather__container" id="weather__container">
         </div>
     </section>
+    <section class="map">
+        <div id="map" style="width: 100%; height: 400px"></div>
+    </section>
     <script src="js/weather.js"></script>
+    <script>
+
+    </script>
 </body>
 </html>
