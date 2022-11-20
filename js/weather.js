@@ -1,12 +1,12 @@
 const msg = document.querySelector(".msg");
 const units = document.querySelector(".units");
 const map = document.getElementById("map");
-const weatherContainer = document.getElementById("weather__container")
+const weatherContainer = document.getElementById("weather__container");
 const applicantForm = document.getElementById('form__box');
-const weatherForm = document.getElementById("form")
-const cityName = document.querySelector("h1")
-const unitsC = document.getElementById("units-c")
-const unitsF = document.getElementById("units-f")
+const weatherForm = document.getElementById("form");
+const cityName = document.querySelector("h1");
+const unitsC = document.getElementById("units-c");
+const unitsF = document.getElementById("units-f");
 const btnOpenForm = document.getElementById('openForm');
 const locationMy = document.getElementById('location__my');
 
@@ -16,19 +16,19 @@ document.addEventListener('mousedown', closeForm);
 
 function getLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(handleLocationMy, errorLocationMy)
+    navigator.geolocation.getCurrentPosition(handleLocationMy, errorLocationMy);
   }  else {
-    msg.textContent = "error. Не получается определить вашу геолокацию"
+    msg.textContent = "error. Не получается определить вашу геолокацию";
   }
 }
 
 async function handleLocationMy(position) {
-  const { longitude, latitude }  = position.coords
+  const { longitude, latitude }  = position.coords;
   const response = await fetchData(latitude, longitude);
   if (!response) {
     return null;
   }
-  render(response)
+  render(response);
 }
 
 function errorLocationMy() {
@@ -53,12 +53,12 @@ const fetchData = async (latitude, longitude) => {
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=2931438045cd03cbd77760fecb7fd68b&lang=ru`);
     return await result.json();
   } catch (error) {
-    msg.textContent = "error"
+    msg.textContent = "error";
   }
 }
 
 function serializeForm(formNode) {
-  return new FormData(formNode)
+  return new FormData(formNode);
 }
 
 async function handleFormSubmit(event) {
@@ -72,10 +72,10 @@ async function handleFormSubmit(event) {
 }
 
 function render(response) {
-  defaultStateBeforeRender()
+  defaultStateBeforeRender();
   cityName.textContent = response.name;
   weatherContainer.innerHTML = markUpWeatherContainer(response);
-  renderDayOrNight(response)
+  renderDayOrNight(response);
   renderMap(response);
 }
 
@@ -88,7 +88,6 @@ function isDay(data) {
   let sunrise = data.sys.sunrise;
   let sunset = data.sys.sunset;
   let now = Date.now() - data.timezone;
-  console.log(now)
   return (now > (sunrise * 1000) && now < (sunset * 1000));
 }
 
@@ -175,7 +174,7 @@ function renderMap(data) {
   ymaps.ready(function () {
     let myMap = new ymaps.Map('map', {
           center: [data.coord.lat, data.coord.lon],
-          zoom: 15
+          zoom: 15,
         }, {
           searchControlProvider: 'yandex#search'
         }),
@@ -186,7 +185,7 @@ function renderMap(data) {
           iconLayout: 'default#image',
           iconImageHref: 'images/location.svg',
           iconImageSize: [30, 42],
-          iconImageOffset: [-5, -38]
+          iconImageOffset: [-5, -38],
         });
     myMap.geoObjects
         .add(placemark);
