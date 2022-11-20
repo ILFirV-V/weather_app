@@ -31,11 +31,10 @@ async function handleLocationMy(position) {
   render(response)
 }
 
-function errorLocationMy() { // если всё плохо, просто напишем об этом
+function errorLocationMy() {
   msg.textContent = "error. Не получается определить вашу геолокацию";
 }
 
-// обработка кнопки вывода формы
 function closeForm(event) {
   if(event.target.closest('.form') === null && btnOpenForm.disabled){
     weatherForm.style.display = 'none';
@@ -47,9 +46,7 @@ function openForm() {
   weatherForm.style.display = "flex";
   btnOpenForm.disabled = true;
 }
-//
 
-//получение погоды
 const fetchData = async (latitude, longitude) => {
   try {
     const result = await
@@ -59,9 +56,7 @@ const fetchData = async (latitude, longitude) => {
     msg.textContent = "error"
   }
 }
-//
 
-//обработка полученнных данных
 function serializeForm(formNode) {
   return new FormData(formNode)
 }
@@ -75,20 +70,15 @@ async function handleFormSubmit(event) {
   }
   render(response)
 }
-//
 
-//Прорисовка
 function render(response) {
-  weatherForm.style.display = "none";
-  btnOpenForm.disabled = false;
-  units.style.display = "flex";
+  defaultStateBeforeRender()
   cityName.textContent = response.name;
   weatherContainer.innerHTML = markUpWeatherContainer(response);
   renderDayOrNight(response)
   renderMap(response);
 }
 
-//Получить время дня
 function renderDayOrNight(data) {
   let attrName = isDay(data) ? 'day':'night';
   document.documentElement.setAttribute('data-theme', attrName);
@@ -101,9 +91,7 @@ function isDay(data) {
   console.log(now)
   return (now > (sunrise * 1000) && now < (sunset * 1000));
 }
-//
 
-//рисуем данные
 const markUpWeatherContainer = (dataWeather) => {
   return `<div class="weather__inner">
             <h2 class="weather__temperature"><span id="temperature">${Math.floor(dataWeather.main.temp - 273)}</span>&deg</h2>
@@ -140,9 +128,18 @@ const directionOfWind = (degree) => {
   if (degree>22.5) { return 'северо-восточный' }
   return 'северный';
 }
-//
 
-// обработка системы счисления температуры
+function defaultStateBeforeRender() {
+  weatherForm.style.display = "none";
+  btnOpenForm.disabled = false;
+  units.style.display = "flex";
+  if(unitsC.classList.contains('unit-current')) {
+    return;
+  }
+  unitsC.classList.add('unit-current');
+  unitsF.classList.remove('unit-current');
+}
+
 unitsC.addEventListener('click', () => {
   if(unitsC.classList.contains('unit-current')) {
     return;
@@ -172,7 +169,6 @@ const cToF = (celsius) => {
 const fToC = (fahrenheit) => {
   return (fahrenheit - 32) * 5 / 9;
 }
-//
 
 function renderMap(data) {
   map.innerHTML = "";
@@ -184,32 +180,15 @@ function renderMap(data) {
           searchControlProvider: 'yandex#search'
         }),
 
-        myPlacemark = new ymaps.Placemark(myMap.getCenter(), {
+        placemark = new ymaps.Placemark(myMap.getCenter(), {
           hintContent: 'Метка расположения',
         }, {
           iconLayout: 'default#image',
           iconImageHref: 'images/location.svg',
-          iconImageSize: [35, 35],
-          iconImageOffset: [-25, -50]
+          iconImageSize: [30, 42],
+          iconImageOffset: [-5, -38]
         });
     myMap.geoObjects
-        .add(myPlacemark);
+        .add(placemark);
   });
 }
-
-//показать загрузку во время отправки данных
-// function toggleLoader() {
-//   const loader = document.getElementById('loader')
-//   loader.classList.toggle('hidden')
-// }
-
-
-//
-// function checkValidity(event) {
-//   const formNode = event.target.form
-//   const isValid = formNode.checkValidity()
-//
-//   formNode.querySelector('button').disabled = !isValid
-// }
-//
-// applicantForm.addEventListener('input', checkValidity)
